@@ -1,0 +1,6 @@
+
+*.exe
+*.pdb
+*input.txt
+*inputtest.txt
+*input.js
