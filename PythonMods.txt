@@ -1,0 +1,738 @@
+Ceci est un outil pour les auteurs de textes en langage Python.
+surtout pour la version 3.3.2
+
+VERSION 3
+DATE 02/2014
+
+#-------------------------------------------Généralités-------------------------------
+A mettre en début de fichier !
+#!/usr/bin/python
+#-*-coding:utf-8 -*
+
+#variantes:
+utf-8
+cp1252
+iso-8859-1
+Latin-1
+...
+
+python -m http.server 8080
+#Le rang premier dans Python est le rang 0
+#Une Indentation marque le début d'une boucle et le retour au bord marque sa fin
+# l'antislash \ ou des parenthèses ()vous permettent d'écrire sur plusieurs lignes une seule instruction.
+# point virgule; permet de coller plusieurs instructions sur une seule ligne. Vous pouvez mettre le ; après chaque instructions
+#Utilisez soit des [Espaces] soit 1 [Tabulation] mais il est déconseillé de mélanger les 2
+#Ne pas mélanger les types !
+#Les fonctions de ce texte sont directement copiable dans un fichier Python 3.3 et éventuellement d'autres versions
+print(a)#afficher la valeur stocké dans a,parenthèses obligatoires en version 3.X
+global Variable_1#Cette variable est accessible de partout(simplification)
+del (X)#Supprime définitivement la variable X
+id(X)#Fonction qui renvoie l'adresse mémoire de l'objet X en entier(int)
+
+if __name__ == '__main__':
+    #Si ce programme est le main alors ... permet de faire une démo du module qui ne se déclenche pas lors d'un import
+
+#----------------------------Types d'objets ou classes (en cours)----------------------------------------
+
+int(x)#-->entier(integer)
+bool(x)#-->boléen(True or False),False si x=0 ou si x est un objet vide. enfant de int
+float(x)#-->flottant ou décimale(float)
+str(x)#-->ch.(string)
+list(x)#-->liste(list or sequence)
+tuple(x)#-->liste d'objets de même type
+dict(x)#-->bibliothèque ou dictionaire
+
+isinstance(objet, typeD'objet)#--> renvoie True si l objet est bien de ce type, ou False si c'est un autre type d'objet
+(type(0)==int)#pareil que isinstance
+type(a)# fonction qui donne le type de a (int,float,str etc)
+
+#-----------------------------------------------Nombres-----------------------------------------------
+
+from math import* #Pour les opérations basiques on peut faire sans ce module
+1.0 #du type float(nombre exact)
+True #Type bolean
+5 #du type int(pas de virgule)
+3+2j #Complexe
+z.real #Lecture seule de la partie réelle ou imaginaire en float
+z.imag
+#Opération basiques: -(opposé)+(addition)*(multiplication)/(division)
+int(x)#Transformer en entier x
+float()#Précision exemple: 1.0
+fabs(-5)#fonction valeur absolue
+a,b = b,a # permutation
+x = y = z = 0 # déclaration multiple sur valeur unique
+pow(a,b)#a puissance b
+
+x=input('x=')#x prend la valeur numérique entrée par l'utilisateur
+
+
+#-----------------------------------------------Fonctions-----------------------------------------------
+
+Fonction définie avec def NomDeLaFonction et () et les arguments dans les () séparés avec des virgules
+Les arguments sont des objets utilisé dans la fonction.
+Il est possible de def une fonctions sans arguments :()
+La ligne return n'est pas obligatoire non plus.Elle permet de renvoyer 1 objet (ou plusieurs objets en tuple) obtenus avec la fonction.
+Si plusieurs objets sont renvoyés on peut les sélectionner avec leur rang de retournement:
+Ex:(NomDeLaFonction(a,b))[0]-->premier objet renvoyé,etc.
+-->
+def NomDeLaFonction(a,b):
+<Indentation>#Bloc de la fonction
+<Indentation>#Bloc de la fonction
+	     #On peut utiliser a et b dans les blocs
+	     #Bloc de la fonction
+	      return (x)
+#fin de la définition
+
+#Pour appeler une fonction:
+NomDeLaFonction(a,b)
+#Pour appeler une fonction et stocker son objet résultat :
+Resultat = NomDeLaFonction(a,b)
+
+Définir une fonction avec un nombre d'arguments variable :
+
+0. Avec des valeurs prédéfinis:
+mettre =valeur à droite de chaque argument.
+Si vous êtes sûr que l'argument sera toujours passé lors de l'appel, 
+alors la valeur prédéfinis ne sera jamais pris en compte et ne sert à rien
+Si l'argument n'est jamais donné alors il vaut mieux déclarer cette variable en local
+attention au objet mutables (list dict), il faut les créer sur mesure sinon il réutilisera le précédent
+def foo(x=None):
+    if x is None:
+    x = []
+
+1. Avec des tuples:
+#Mettre * devant l'argument tuple, Le tuple peut être vide.
+
+2. Avec des dictionnaires
+#Mettre ** devant l'argument dictionnaire, il faudra alors soit ne rien envoyer lors de l'appel soit envoyer un ou plusieurs paramètres de type dic. 
+
+Exemple des priorités:
+def fonction_a(parent, fg='white', *tuple, **dictionnaire):
+#toujours respecter la syntax
+...
+#-----------------------------------------------Boucles-----------------------------------------------
+
+if a==b: #boucle conditionnelle SI
+	...
+	...
+#fin si
+
+elif (X): # début de ou alors
+	...#X est évalué à vrai ou faux !
+	...
+#fin  ou alors
+
+elif a==d: # début ou alors(2)
+	...
+	...
+#fin  ou alors(2)
+
+
+else: # OU Dans tout les autres cas 
+	...
+	...
+#fin tout les cas contraires
+#et fin de toute la boucle 
+vérifier vide:
+if Tableau is None:
+        Tableau = []
+
+if Tableau is not None: #! if Tableau: pourrait être évalué False si la valeur correspond à zéro !
+        ...
+
+
+while a<b: #Tant que, alors faire ...
+	...
+	...
+
+while 1: #Boucle infinie car 1 est toujours vrai
+	...
+	...
+#Voici la syntaxe:
+#(large:)a<=b , a>=b ;(strict:) a<b , a>b , a!=b(différent) , a==b(égal)
+# and, or pour combiner
+#break arrête une boucle avant la fin
+#continue est similaire: au lieu d'arrêter la boucle,elle revient au début.
+#pass pour ne rien faire
+
+for i in range(0,5) :#boucle répété 5 fois
+	#action de la boucle,on peut utiliser i qui est dans ce cas un entier
+	#écrire après exactement une tabulation()
+
+for i in range(0,x,b):#boucle répété jusqu'à ce que i atteigne x en partant de 0 avec un pas de b
+
+
+
+
+f = lambda x,y: x * y
+#f nom,x et y paramètres et x*y en retour;f est une fonction;utile dans certains cas
+
+try:
+    # Bloc exécuté
+except NomErreur as er:
+    # Bloc exécuté en cas de cette erreur :NomErreur
+    #on peut utiliser er comme variable ici
+
+
+#-----------------------------------------------Chaines et listes et tuples-----------------------------------------------
+LES Ch. et Listes ont beaucoup de méthodes en commun, ne pas hésiter à essayer une méthode de liste sur la ch et réciproque
+#Création
+ch=input(" Entrez la chaine de car. ")#Demande à l'utilisateur une ch.
+#ou
+ch=str()
+#ou
+ch="Kaboum"
+
+print (ch [3:10])# du 4 au 11 ième rang de la ch.
+print (ch [:10])# les dix premiers
+print (ch [10::])# à partir du dixième
+print (ch [3])# uniquement le 4 ème
+print (ch [-1])# uniquement le dernier
+print (ch )# affiche toute la ch.
+
+ch.lower()#met en minuscule .upper -->majuscule et .capitalize -->Premier Car en maj et le reste ne minuscule
+ch.title#Tout les début de mots sont mis en maj. et le reste en minuscule. -->à vérifier.
+ch.strip()#Enleve les espace en début et fin de ch. On peut aussi spécifier ce que l'on veut enlever
+longeur=len(ch)#longueur de la ch. ou de la liste (taille logique)
+ch.count("mot") : renvoie le nombre de "mot" dans la ch
+ch.find("mot")renverrait -1 si non présent
+ch.index("mot")soulève une erreur si non présent
+
+a = ch.isalpha()#a == True si uniquement des car. normaux(lettres) dans ch.
+ch.isdigit()# True si nombre dans la ch
+
+liste=ch.split(".")#Renvoie plusieurs objets en liste séparé avec ce qui a dans les ".Ici chaque phrase serait un élément de la liste. Le séparateur n'est plus présent dans la liste
+liste =list(ch)#Création d'une liste à partir d'une ch.La liste contient des objets du type ch avec un seul car.Ressemble au split
+liste=list()#Liste vide
+#ou
+liste=[]
+nouvelleliste=range(0,10,1)#(départ,fin, et pas)La fonction range() crée une liste d'entiers régulièrement espacés ici:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+liste3=map(str,liste2)#liste3 est une liste qui contient tout les objet de liste2 en str
+nvchaine = "".join(liste)#Réciproque de split, On peut mettre un ou des car. dans les "
+
+liste[x]=y#Remplace l'objet au rang x par l'objet y
+liste[:5]='Phrase'#Remplace les premiers objets par respectivement les lettres 'P', 'h', 'r', 'a', 's', 'e'
+range(0,5)# renvoie une liste de 0 à 5 exclus
+
+
+ch = ch + alphabet[i]#Ici on concatène une lettre qui est une ch à la ch.
+
+ord('t')#Donne le rang ASCII de la lettre
+chr(120)#Réciproque:Donne la lettre ASCII du rang
+
+ma_liste2=ma_liste#Copie les adresses mémoire de la liste
+ma_liste2=ma_liste[:]#Copie uniquement le contenu de la liste attention au listes de listes
+ma_liste.append(56) # On ajoute 56 à la fin de la liste
+ma_liste.insert(2, 'c') # On insère 'c' à l'indice 2.
+del ma_liste[x] # On supprime l' élément au rang x de la liste
+ma_liste.remove(32) #élimine le premier objet qui vaut 32(et non la variable au rang 32)
+ma_liste.sort()#Tri dans ordre croissant la liste
+L1.pop(2)#Enlève l'objet à l'indice 2 et retourne cet objet
+L1.extend(L2)#Enchaine les 2 listes bout à bout
+l.count(x) : renvoie le nombre occurrences x de la liste.
+l.index(x[, i[, j]]) : retourne le plus petit k tel que l[k] = x et i<=k<=j. retourne une erreur si l'élément n'est pas présent dans la liste. Si i et j sont omis, l'ensemble de la liste est considéré.
+
+liste2dimension=
+[
+[10, 7, 0, 0, 0, 0, 1, 4], [12, 7, 0, 0, 0, 0, 1, 6]
+]
+
+#[ [X],[Y],[Z],[D] ]#Si X Y Z D sont des listes dans lesquels il y a des listes
+#alors c'est une liste 3Dimansion et ainsi de suite--> à vérifier
+
+#exemple d'un tableau 10x10 avec la table de 1 à 10 en nombre dedans:
+liste2dimension=[
+[int((colonne+1)*(ligne+1)) for colonne in range(0,10)]
+for ligne in range(0,10)
+]
+#Pour le rang entrer comme ceci Liste 2 dimension [colonne][ligne]#Colonne et ligne sont des entiers(int)
+
+#Les tuples sont l'équivalent d'une liste sauf qu'ils contiennent un seul type d'objet à la fois et ne sont pas modifiables
+tuple()#--> tuple vide
+TupleAlpha=(5,4,3,2,1,0)
+Utilisation:
+"La Chaine" % (LeTuple)
+"%d.%d" % (line, column) == str(line)+"."+str(column)
+
+exemple d'utilisation d'une liste:
+a=["a","b","c","d","ef","hallo","Dernier"]
+for index,lettre in enumerate(a):
+	zbla
+
+
+#-----------------------------------------------Bibliothèques ou dictionnaires------------------------------------
+
+#Création
+dictionnaire = dict()
+#ou
+dictionnaire = {}
+#Exemple de création d'un dictionnaire simple
+Einstein = {}
+Einstein["santé"] = "Mort"#Met à jour ou ajoute
+Einstein["Génie"] = "Oui
+#ou
+Einstein = {"santé":"Mort","Génie":"Oui"}
+
+print (Einstein["Génie"])# --> "Oui
+
+del Einstein["santé"]#Supprime la variable 
+Einstein.pop("santé")#Supprime aussi la variable mais renvoie en même temps sa valeur.
+dict1.update(dict2)#Fusion
+
+dico.popitem() renvoie une paire (clé-valeur) et la supprime du dictionnaire
+
+dico.clear() supprime tous les éléments du dictionnaire dic
+dico=dic.copy() copie un dictionnaire dans un autre, les modifications de l'un n'affectent pas l'autre
+
+dico.keys() crée une liste des clés du dictionnaire dico
+dico.values() crée une liste des valeurs du dictionnaire dico
+dico.items() crée une liste de tuples (clé,valeur): [(1,'ek'),(2,'do'),(3,'tin')...] 
+
+
+#-----------------------------------------------Ensembles-----------------------------------------------
+
+a=set([1,2,3,4,5])
+nv=s.copy() copie un ensemble dans un autre
+s.clear() vide l'ensemble
+len(s) renvoie le nombre d'éléments de l'ensemble
+Méthodes pour ensembles
+
+s.add(x) ajoute l'élément x s'il ne s'y trouve pas encore
+s.discard(x) enlève l'éventuel élément x de s
+s.pop() enlève un élément au hasard, KeyError générée si l'ensemble est vide
+s.remove(x) enlève l'élément x, KeyError générée si x n'appartient pas à s.
+
+x in s retourne True si l'élément x appartient à s (condition permettant d'éviter KeyError)
+a.issubset(b) (ou a<=b) retourne True si a est contenu dans (ou est égal à) b
+a.issuperset(b) (ou a>=b) retourne True si a contient (ou est égal à) b
+
+a.union(b) (ou a|b) retourne les éléments de a ou b
+a.update(b) (ou a|=b) ajoute les éléments de b à a
+a.intersection(b) (ou a&b) renvoie les éléments communs à deux ensembles
+a.intersection_update(b) (ou a&=b) ne conserve à a que les éléments communs aux deux ensembles
+a.difference(b) (ou a-b) renvoie les éléments de a n'appartenant pas à b
+a.difference_update(b) (ou a-=b) retire à a tous les éléments communs avec b
+a.symmetric_difference(b) (ou a^b) retourne les éléments non commun à a et b
+a.symmetric_difference_update(b) (ou a^=b) retire à a tous les élément communs avec b
+
+frozenset() permet la définition d'ensemble fixes, et ne permet donc pas les modifications par les méthodes clear(), add(), pop(), discard(), remove() ni update() 
+#------------------------------------------Création d'un nouveau type de variable ou objet (classe)---------------------------------
+#une classe peut dériver d'une autre classe.Cette classe enfant est appelé sous-classe et hérite de toutes les méthodes de la première. Sa classe parent est appelé super-classe. L'héritage multiple existe est dans ce cas l'ordre est important.
+#Une classe s'écrit par convention en CamelCase
+
+class NomObjet(Classes_Supers):
+    """documentation de la classe"""
+    constantes_de__l_objet="Test Nom Objet"
+
+    def __init__(self, **attributs):
+        self.Caracteristiques = objets
+
+    def __del__():
+	#quand del est appelé
+
+    def __new__():
+
+    def __repr__(self):#affiche quand print() est appelé
+        return ("ch")
+
+    def nom_methode(self, ...):
+        #...
+        return (X)
+
+
+print(NomObjet.__doc__)# sur l objet du type pour lire la documentation
+
+#utilisation de @property
+class C(object):
+    def __init__(self):
+        self._x = None
+
+    @property
+    def x(self):
+        """I'm the 'x' property."""
+        return self._x
+
+    @x.setter
+    def x(self, value):
+        self._x = value
+
+    @x.deleter
+    def x(self):
+        del self._x
+
+
+écrire les méthodes de comparaison
+__lt__(self,b):<
+__le__<=
+__eq__=
+__ne__!=
+__gt__>
+__ge__>=
+
+#---------------------------------------tkinter, un module qui permet de manipuler des interfaces graphiques (Fenêtres)----------------------------
+
+from tkinter import*
+
+#Globalement :NomduWidget = TypeDuWidget(Fenetre parent, option1=..., option2=...)
+NomduWidget.pack()
+NomduWidget.grid(row=y,column=x)#ou
+NomduWidget.place(...)# (Ne pas mélanger les 3 méthodes au sein d'un même conteneur)
+
+
+#Fenêtre
+fenetre=Tk()#nom de la fenetre=Tk()
+fenetre.geometry('800x600+100+200')
+#nomdelafenetre.geometry('dimensionLxdimensionl+positionx+positiony')
+fenetre.title('A')#nom de la fenetre.title('titre')
+Fen.configure(bd=3,bg='white')
+fenetre.resizable(width=False, height=False)#Empeche l'utilisateur de redimensioner la fen.
+fenetre.iconbitmap("Icone.ico")#Chosit l'icone de la fenetre
+fenetre.mainloop()#Sortie de la fenetre,obligatoire, à mettre à la fin
+root.protocol("WM_DELETE_WINDOW", Interception)#Pour intercepter la fermeture du root
+
+
+#Sous-fenetre ou cadre
+SousF= Frame(Fen, relief='ridge', borderwidth=2)#Existe aussi LabelFrame qui avec < text= > permet de donner un titre au Frame
+SousF.pack(fill='both',expand=1)
+SousF.destroy()#Détruit ce widget et tout son contenu également
+SousF.forget()#"Oublie" le widget. 
+ou grid_forget()
+ou place_forget()
+On peut néanmoins le faire réapparaitre avec une méthode de sortie (pack,grid, ou place)
+
+
+#Label
+phrase=Label(fenetre,text='Bonjour toi!',bg='green',font="Arial 15 bold",fg='black', wrap=300)
+phrase.pack()#Sortie
+
+
+#Message
+m=Message(Fen, width="60",text="Le texte sera affiché comme un Label avec un retour automatique à la ligne à chaque fois que width est atteint")
+m.pack()
+
+
+#Case à cocher
+var_case=#IntVar() ou StringVar() ou BooleanVar()
+case = Checkbutton(fenetre, text="Ne plus poser cette question", variable=var_case)
+case.pack()
+ou
+case.grid(row=1,column=1)
+var_case.get()#Renvoyer la valeur enregistré dans var_case
+
+
+#Bouton
+B=Button(Fen, text="cliquez ici", command=NomFonction, state='active' )
+
+#Button radio
+Choix=StringVar()
+R=Radiobutton(Fen, text="Rouge",indicatoron=False, variable=Choix, value="rouge")
+#La variable doit être commune au groupe de Radios
+#La value doit être unique au bouton
+
+#méthodes pour les buttons
+deselect()
+flash()
+#Redraws the button a couple of times, alternating between active and normal appearance. This can be useful when debugging, or to indicate when some other user action has activate the button.
+invoke()
+#Calls the command associated with the button.
+select()#Selects the button.
+
+
+#Zone de saisi(par l'utilisateur, au clavier)
+ZoneVille=Entry(FenA,textvariable=Ville,width=20)
+
+#Zone de saisie pour nombres:
+ZN=Spinbox(root, from_=0,to=14)
+
+#Fenêtre additionnelle
+F=Toplevel(root)
+F.focus_set()
+F.focus_force()#Met le focus sur le contexte
+
+#Text et ascenseur
+#Ce widget est une zone de texte qui permet de saisir du texte sur plusieurs lignes. 
+sc = Scrollbar(Fen)
+T=(Fen,width=60,yscrollcommand=sc.set)
+T.insert(INSERT,"texte à insérer")
+sc.config(command=T.yview)#orient='horizontal'
+sc.pack(side=RIGHT, fill=Y)
+T.pack()
+T.yview("moveto","1.0")#Descendre à la fin
+
+#scale
+VariableTkEntiere=IntVar()
+VariableTkEntiere.set(5)
+Curseur1=Scale(root,resolution=2, from_=0, to=10, length=800, tickinterval=3, variable=VariableTkEntiere, label="Mon Curseur",orient='horizontal', command=ChangerCurseur)
+Curseur1.pack()
+
+
+
+
+
+#Espace graphique
+can = Canvas(FenJ, height=100, width=100)#Widget polyvalent dans lequel on peut faire beaucoup de choses
+rectangle = can.create_rectangle(0,0,100,100)
+can.grid(row=0,column=0)
+#Coordonnées point A(x;-y)Coordonnées point B(x;-y)
+#Avec A point en haut à gauche du rectangle et B en bas à droite
+#Et avec l'axe x,y ortho, orienté vers la droite et le haut
+
+
+#Evenements:
+def Rec(event):
+    if event.x in range(0, 100) and event.y in range(0, 100):
+        print((event.x, event.y))
+
+objet_tkinter.bind("<Button-1>", Action_quand_click_gauche)#On lie un objet-widget avec un evenement et une fonction évenement(event)
+
+#"<Button-1>", "<Double-Button-1>", "<Button-2>", "<Button-3>"
+#"<Z>"--> à la place de Z on peut mettre Leave, Enter, ButtonRelease,B1-Motion
+#"<X>" pour la touche X du clavier, XRelease, Return pour la touche Entreé
+can.bind("<Control-X>", Rec) #pour combiner 2 touches, pareil pour Shift
+#virtual events
+évènement crée par l'instance tk ou ttk et possibilité d'intercepter
+
+#Treeview
+<<TreeviewSelect>> Generated whenever the selection changes. 
+<<TreeviewOpen>> Generated just before settings the focus item to open=True. 
+<<TreeviewClose>> Generated just after setting the focus item to open=False. 
+
+
+
+from tkinter import*#3.X
+from tkinter.filedialog import*
+askdirectory(**options)
+        Ask for a directory, and return the file name
+    
+    askopenfile(mode='r', **options)
+        Ask for a filename to open, and returned the opened file
+    
+    askopenfilename(**options)
+        Ask for a filename to open
+    
+    askopenfilenames(**options)
+        Ask for multiple filenames to open
+        
+        Returns a list of filenames or empty list if
+        cancel button selected
+    
+    askopenfiles(mode='r', **options)
+        Ask for multiple filenames and return the open file
+        objects
+        
+        returns a list of open file objects or an empty list if
+        cancel selected
+    
+    asksaveasfile(mode='w', **options)
+        Ask for a filename to save as, and returned the opened file
+    
+    asksaveasfilename(**options)
+        Ask for a filename to save as
+
+############## IMAGES tkinter########
+#! Pour voir une image à un instant t il faut que cette image soit directement accéssible à cette instant. Si vous utilisez une fonction pour chargez les images faites en sorte que l'image ne soit pas local sinon elle disparaît à la fin de la fonction
+#pour les images .gif (et .ppm)
+
+Fenetre=Tk()
+photo=PhotoImage(file="Image.gif") #Ouverture de l'image
+largeur=photo.width(); hauteur=photo.height() # Determination des dimensions
+Fenetre.geometry(str(largeur+2)+'x'+str(hauteur+2))
+Fenetre.title(str(largeur)+'x'+str(hauteur))#Inutile
+fond=Canvas(Fenetre, bg='black')
+fond.pack()
+img=fond.create_image(largeur/2+1,hauteur/2+1,image=photo)
+
+
+#Une image trop grande peut donner des résultats non-voulues(Un bout de l'image seulement est affiché)
+#On peut importer PIL: from PIL import Image, ImageTk
+#PIL est un module tiers, à télécharger et à installer-->http://www.pythonware.com/products/pil
+#///ATTENTION IL FAUT LA VERSION COMPATIBLE AVEC VOTRE VERSION DE PYTHON
+#Attention ne pas importer tkinter APRES en entier car il contient une fonction
+#Image qui écrase l'autre
+
+fichierimage=Image.open("Arbre.bmp")#image brut, il faut mettre le nom exact du fichier!
+photo = PhotoImage(fichierimage)#la photo est mnt lisible pour tkinter
+BouttonImage = Button(image=photo)#Marche avec quasiment tout les widgets
+#Ceci est l action pour changer l'image:
+#BouttonImage['image'] = photo
+BouttonImage.pack()#Sortie
+#---------------------------------------------------Bitmaps-------------------
+#installés par défaut:
+#'error', 'gray75', 'gray50', 'gray25', 'gray12', 'hourglass', 'info', 'questhead', 'question', 'warning'
+A=Label( Fenetre, bitmap='gray50' )
+A.pack()
+
+############## Fin IMAGES ###############
+
+#Boites Input
+import tkinter.simpledialog as Saisie
+
+chaine= Saisie.askstring(title="", prompt="")
+entier= Saisie.askinteger(title="", prompt="")
+decimal= Saisie.askfloat(title="", prompt="")
+
+On peut ajouter quelques options:
+initialvalue= valeur de départ (chaîne, entier ou décimal)
+minvalue= valeur minimale
+maxvalue= valeur maximale
+#-----------------------------------------------Turtle-----------------------------------------------
+
+from turtle import*
+
+speed(0)#Vitesse de 0 à 10 avec 0 quasi instantané
+forward(a)
+left(b)
+right(180)
+circle(50,90)
+goto(-100,200)#Aller à la position x,y
+ht()#Cacher
+up()#lever le crayon
+down()#baisser
+color('blue')
+fill(1)
+fill(0)
+bgcolor('blue')
+dot(b,'black')
+ht()
+exitonclick()
+
+#-----------------------------------------------JSON-----------------------------------------------
+JavaScript Object Notation
+Json est un format pour stocker des données complexes en texte. (Alternative à XML et pickle)
+Ecrire en json:
+
+import json
+
+texte_format_json = json.dumps(object, sort_keys=True, indent=4, separators=(',',':'))
+#une fois que vous avez le texte vous pouvez l'écrire dans un fichier
+
+#attention les clefs de dics doivent être des strings sinon erreur ValueError
+#object peut être n'importe quel type basique de Python ch dic liste tuple nombre complexe ...
+#Les listes et tuples sont des considérés comme des listes en JSON. L'objet tuple sera une liste une fois re-chargé
+#Les strings sont convertis en Unicode lors du décodage
+
+lire json:
+
+object = json.loads(texte_format_json)
+
+
+#-----------------------------------------------Temps----------------------------------------------
+
+from time import*
+
+time()#Donne le temps écoulées en secondes depuis une certaine date ~=1975
+#Permet de donner le temps écoulé pour exécuter le programme.
+localtime()#Donne toutes les infos
+sleep(3.5) # Faire une pause pendant 3,5 secondes
+time.localtime()#Renvoie une liste:
+time.localtime()[0]	time.localtime().tm_year	année en quatre chiffres
+time.localtime()[1]	time.localtime().tm_mon	mois de 1 à 12
+time.localtime()[2]	time.localtime().tm_mday	jour de 1 à 31
+time.localtime()[3]	time.localtime().tm_hour	nombre d'heures de 0 à 23
+time.localtime()[4]	time.localtime().tm_min	nombre de minutes de 0 à 59
+time.localtime()[5]	time.localtime().tm_sec	nombre de secondes de 0 à 61
+time.localtime()[6]	time.localtime().tm_wday	jour de la semaine en chiffre (lundi=0)
+time.localtime()[7]	time.localtime().tm_yday	jour de l'année de 1 à 366
+time.localtime()[8]	time.localtime().tm_isdst	1 en cas de jour en période d'heure d'été 
+
+#---------------------------------------------Aléatoire  => Random-----------------------------------------------
+
+from random import*
+
+randrange(1, 7)#Renvoie un nombre aléatoire compris entre 1 et 6#il faut le module aléatoire(random pour cela)
+
+shuffle(Liste)#Mélange la liste
+
+
+#-----------------------------------------------OS-----------------------------------------------
+
+import os
+
+os.system("pause")#Met le prgm en pause,l'utilisateur peut appuyer une touche pour continuer
+os.path.abspath("A.txt")#renvoie le chemin absolu
+os.getcwd()#renvoie le répertoire de travail instantané
+os.path.splitext(path)#sépare l'extension et le chemin, doublet est renvoyé
+os.path.join(path_1,path_2)#joint les chemins en inérant / ou // ou \\ selon le besoin
+os.mkdir(path)#crée un répertoire au chemin
+os.rename(source,destination)#renomme un fichier ou un répertoire
+os.startfile("PythonMods3320.txt")#sur windows uniquement
+os.listdir()#liste tout dans répertoire courant
+#Ouvre le fichier
+
+#-----------------------------------------------Fichiers-----------------------------------------------
+
+Pour les fichiers textes:
+
+Scores=open("Scores.txt",'r')
+#Open prend deux argument :le nom du fichier et le mode de lecture
+#'r' pour read only(lecture),'a' pour append,'w' pour write --> ATTENTION 'w' efface instantanémment tout ce qui dans le fichier
+
+Scores.write(OBJET STRING si fichier texte )#Ecriture seulement en 'a' et 'w'
+
+txt=Scores.read()#Tout est lu,readline() pour lire une seule ligne readlines pour toutes les lignes rangés dans une liste 
+
+for lignes in fichier:#Permet de faire qq pour chaque ligne du fichier
+    # ...
+
+Scores.readline().rstrip('\n\r')#pour supprimer les car. en fin de ligne
+
+Scores.close()#TRES IMPORTANT LA FERMETURE APRES
+
+os.remove(chemind'accés)#Supprime le fichier à l'emplacement
+
+#.tell() donne l'emplacement du curseur lecture .seek(X)déplace le curseur lecture au rang X du fichier
+
+import codecs
+codecs.open("nom",'w','utf-8').write("string")
+
+
+#----------pickle--------------------------
+#ne pas utiliser pickle car il y a des failles de sécurité. Voir la documentation officielle pour + d'info
+
+#-------------------------------------------
+
+#-----------------------------------------------Importation de modules-----------------------------------------------
+import antigravity #pour voler !
+from turtle import*
+from tkinter import*
+from random import*
+from math import*#cmath pour les complexes avec j pour le i
+from time import*
+import os
+
+import tkinter as Tk
+#importe sous un autre alias
+from x import* 
+#Importe toutes les fonctions et classes définies dans le module x
+#!!! Peut écraser les fonctions avec les mêmes noms importés avant !!!
+#ne pas mettre le from vous oblige à ajouter la provenance à chaque fonction exemple: os.LaMéthode()
+
+from x import a,b,c
+#Importe seulement les objets a b et c du module x
+
+#-----------------------------------------------Vocabulaire-----------------------------------------------
+
+#ch.=chaîne de caractères;car=caractère; main=principal
+#append=ajouter (à la fin),write=écrire,read=lire,
+#
+
+#---Ce qui manque encore dans ce document et qui sera ajouté un jour...---
+
+
+plusieurs widgets de tkinter
+diffèrence entre .quit() et .destroy()
+Place manager
+chemins d'accées
+lecture de flux de données
+base de données
+évenements
+django
+autres inputs
+mot de passe
+
+...
+Liens utiles:
+http://www.newthinktank.com/2010/11/python-2-7-tutorial-pt-7/
+http://www.ferg.org/thinking_in_tkinter/languages/france/penser_en_tkinter.html
+http://www.dil.univ-mrs.fr/~chris/Documents/Tkinter.pdf
