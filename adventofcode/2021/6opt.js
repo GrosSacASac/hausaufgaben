@@ -45,7 +45,7 @@ const fishCountAfterDaysForOneFish = memoizeAsStrings((initialState, days) => {
     return fishCountAfterDaysForOneFish(period -1, days - initialState - 1) + fishCountAfterDaysForOneFish(initial, days - initialState -1);
 });
 
-const daysPassingBy = 80;
+const daysPassingBy = 256; // part 1 is 80
 const evolution = fish.map(initialStateOfFish => {
     return fishCountAfterDaysForOneFish(initialStateOfFish, daysPassingBy);
 })
