@@ -33,9 +33,9 @@ patterns.forEach(pattern => {
                 total += 1;
                 return true
             }
-        })
-    })
-})
+        });
+    });
+});
 
 
 console.timeEnd("Time");
