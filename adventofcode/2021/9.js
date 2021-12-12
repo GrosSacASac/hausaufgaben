@@ -34,6 +34,5 @@ matrix.forEach((line, i) => {
 
 
 console.timeEnd("Time");
-console.log(lowPoints);
 console.log(total);
 
