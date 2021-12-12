@@ -7,14 +7,19 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-const input = fs.readFileSync(`${__dirname}/888input.txt`, 'utf-8');
+const input = fs.readFileSync(`${__dirname}/8input.txt`, 'utf-8');
 console.time("Time");
 let lines = input.split("\n");
-const helpers = [];
-const patterns = lines.filter(Boolean).map(line => {
+
+const both = lines.filter(Boolean).map(line => {
     const split = line.split(" | ");
-    helpers.push(split[0])
-    return split[1];
+    
+    return split.map(words => {
+        return words.split(" ").filter(Boolean).map(word => {
+            const asLetters = Array.from(word);
+            return asLetters.sort().join("")
+        })
+    });
 });
 
 // dddd
@@ -24,25 +29,14 @@ const patterns = lines.filter(Boolean).map(line => {
 // g    b
 // g    b
 //  cccc
-// todo, deduce replament on every line using the helpers
 
-//  const replacements = Object.fromEntries(Object.entries(replacementsA).map(([key, value]) => {
-//     return [value, key];
-// }));
 const originalMapHelpers =  [
     [1, "cf"],
     [7, "acf"],
     [8, "abcdefg"],
     [4, "bdcf"],
 ];
-const originalMap = [
-    [0, "abcefg"],
-    [2, "acdeg"],
-    [3, "acdfg"],
-    [5, "abdfg"],
-    [6, "abdefg"],
-    [9, "abcdfg"],
-].concat(originalMapHelpers);
+
 
 /*.map(([digit, letters]) => {
     return [digit, Array.from(letters).map(l => {
@@ -53,45 +47,84 @@ const originalMap = [
 const count = {}
 let total = 0;
 
-patterns.forEach((pattern, j) => {
+const everyLetterInside = (string1, string2) => {
+    return Array.from(string2).every(letter => {
+        return string1.includes(letter);
+    })
+}
+both.forEach(([pattern, encodedNumber]) => {
+    // console.log(pattern)
     const replacements = {
     };
-    const words = pattern.split(" ").filter(Boolean);
-    const helperWords = helpers[j].split(" ").filter(Boolean);
-    helperWords.forEach(word => {
-        originalMapHelpers.some(([digit, chars]) => {
-            if (chars.length === word.length) {
-                for (let i = 0; i < word.length; i += 1) {
-                    
-                    for (let k = 0; k < word.length; k += 1) {
-                        // replacements[word[i]] = `${replacements[word[i]] || ''} | ${chars[k]}`
-                    }
-                }
+    const indexMap = {
+        // digit -> index in the pattern 
+
+    }
+    originalMapHelpers.forEach(([digit, chars]) => {
+        pattern.some((demo, i) => {
+            if (demo.length === chars.length) {
+                indexMap[digit] = i;
                 return true
             }
         });
     });
     
-    console.log(replacements);
-    const mapForLine = originalMap.map(([digit, letters]) => {
-        return [digit, Array.from(letters).map(l => {
-            return replacements[l];
-        }).join("")]
+    // 9 is the only one that includes 4 and 7
+    indexMap[9] = pattern.findIndex((demo) => {
+        return demo.length === 6 &&
+            everyLetterInside(demo, pattern[indexMap[4]]) &&
+            everyLetterInside(demo, pattern[indexMap[7]]);
     });
-    console.log(mapForLine);
-    words.forEach(word => {
-        const digit = mapForLine.find(([digit, chars]) => {
-            if (chars.length === word.length) {
-                return Array.from(word).every(l => {
-                    return chars.includes(l)
-                })
-            }
-        });
-        console.log(digit?.[0])
+    // 0 is not an 9 and includes a 7
+    indexMap[0] = pattern.findIndex((demo, index) => {
+        return demo.length === 6 &&
+            index !== indexMap[9] &&
+            everyLetterInside(demo, pattern[indexMap[7]]);
+    });
+    // 6 is not 9,0 and only remaining with length 6
+    indexMap[6] = pattern.findIndex((demo, index) => {
+        return demo.length === 6 &&
+            index !== indexMap[9] &&
+            index !== indexMap[0];
+    });
+
+    // 3 includes a 7
+    indexMap[3] = pattern.findIndex((demo) => {
+        return demo.length === 5 &&
+            everyLetterInside(demo, pattern[indexMap[7]]);
+    });
+    // 5 is included inside 6
+    indexMap[5] = pattern.findIndex((demo) => {
+        return demo.length === 5 &&
+            everyLetterInside(pattern[indexMap[6]], demo);
+    });
+    // 2 is the last remaining with length 5
+    indexMap[2] = pattern.findIndex((demo, index) => {
+        return demo.length === 5 &&
+            index !== indexMap[5] &&
+            index !== indexMap[3];
+    });
+    // console.log(`index: digit`);
+    // Object.entries(indexMap).forEach(([key, value]) => {
+    //     console.log(`${value}: ${Number(key)}`);
+    // });
+
+    const reverseMap = Object.fromEntries(Object.entries(indexMap).map(([key, value]) => {
+        return [value, key];
+    }));
+    let numberString = ``;
+    encodedNumber.forEach(encoded => {
+        const indexInDemo = pattern.indexOf(encoded);
+        const actualValue = reverseMap[indexInDemo];
+        numberString = `${numberString}${actualValue}`;
+        // console.log(actualValue)
     })
+    // console.log(numberString);
+    total += Number(numberString);
+    
 });
 
 
 console.timeEnd("Time");
-// console.log(count);
+console.log(total);
 
