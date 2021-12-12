@@ -15,17 +15,9 @@ const matrix = lines.filter(Boolean).map(line => {
     return Array.from(line).map(Number);
 });
 
-const lowPoints = []
-const lowPointsPlus = []
+const lowPointsPlus = [];
 let total = 0;
 
-// dddd
-// e    a
-// e    a
-//  ffff
-// g    b
-// g    b
-//  cccc
 matrix.forEach((line, i) => {
     line.forEach((number, j) => {
         if (
@@ -34,9 +26,8 @@ matrix.forEach((line, i) => {
             (!Number.isFinite(matrix[i][j-1]) || matrix[i][j-1] > number) &&
             (!Number.isFinite(matrix[i][j+1]) || matrix[i][j+1] > number)
         ) {
-            lowPoints.push(number)
-            lowPointsPlus.push(number+1)
-            total += (number+1)
+            lowPointsPlus.push(number+1);
+            total += (number+1);
         }
     });
 });

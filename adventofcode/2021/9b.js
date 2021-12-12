@@ -18,13 +18,6 @@ const matrix = lines.filter(Boolean).map(line => {
 const lowPoints = []
 let total = 0;
 
-// dddd
-// e    a
-// e    a
-//  ffff
-// g    b
-// g    b
-//  cccc
 matrix.forEach((line, i) => {
     line.forEach((number, j) => {
         if (
