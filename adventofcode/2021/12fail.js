@@ -16,14 +16,23 @@ const end = "end";
 const isBig = (node) => {
     return node === node.toUpperCase();
 };
+const endMoves = [];
 const moves = [];
 lines.forEach(function (line) {
     const [from, to] = line.split("-");
-    moves.push([from, to]);
-    moves.push([to, from]);
-});
+    if (from === end || to === end) {
+        
+        endMoves.push([from, to]);
+        endMoves.push([to, from]);
+    } else {
 
-let routes = [];
+        moves.push([from, to]);
+        moves.push([to, from]);
+    }
+});
+moves.push(...endMoves);
+
+const routes = [];
 let newFoundRoute = true;
 
 
@@ -48,7 +57,7 @@ const discoverRoutes = (currentRoute, smallTaken, iSkip, routes, currentLocation
         }
         iSkip = 0;
     }
-    if (routes.includes(currentRoute) ) {
+    if (routes.includes(currentRoute) || !currentRoute.endsWith(end)) {
 
     } else {
         routes.push(currentRoute);
@@ -69,10 +78,6 @@ while (newFoundRoute) {
     // }
     
 };
-
-routes = routes.filter(r => {
-    return r.endsWith(end)
-})
 console.timeEnd("Time");
 console.log(routes);
 console.log(routes.length   );
