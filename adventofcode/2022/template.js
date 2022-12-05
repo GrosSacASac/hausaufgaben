@@ -9,9 +9,8 @@ const __dirname = path.dirname(__filename);
 
 const input = fs.readFileSync(`${__dirname}/xinput.txt`, 'utf-8');
 console.time("Time");
-let lines = input.split("\n");
+let lines = input.split("\n").filter(Boolean);
 
-const l = lines.filter(Boolean);
 
 const x = (a) => {
     
