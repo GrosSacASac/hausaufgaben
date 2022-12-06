@@ -17,7 +17,7 @@ commands = commands.split("\n").filter(Boolean);
 const createStacks = (stacksInput) => {
     const stacksLines = stacksInput.slice(0, stacksInput.length - 1);
     const numbers = stacksInput[stacksInput.length - 1];
-    // the number donc't matter, we just take the last one to know the length
+    // the number don't matter, we just take the last one to know the length
     const length = Number(Array.from(numbers).filter(character => {
         return character !== " ";
     }).at(-1));
