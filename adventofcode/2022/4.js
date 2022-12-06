@@ -28,7 +28,6 @@ const doesOnePairContainTheOther = (pairs) => {
 };
 
 const doesPairOverlap = (pair, pairb) => {
-    //2-4 1-2
     return (pair[0] <= pairb[0] && pair[1] >= pairb[0]) || //1-2 2-2  
            (pair[0] >= pairb[0] && pair[0] <= pairb[1]);  //2-2 1-2
 };
@@ -42,10 +41,10 @@ const doesOnePairOverlap = (pairs) => {
 const pairs = lines.map(pairFromLine);
 const result  = pairs.map(doesOnePairContainTheOther).reduce((total, bool) => {
     return total + Number(bool);
-}, 0)
+}, 0);
 const resultb  = pairs.map(doesOnePairOverlap).reduce((total, bool) => {
     return total + Number(bool);
-}, 0)
+}, 0);
 
 console.timeEnd("Time");
 console.log(result);
