@@ -14,7 +14,8 @@ const lines = input.split("\n").filter(Boolean);
 const currentPosition = [];
 const map = {};
 let currentDirectoryObject = map;
-
+const totalAvailable = 70000000
+const minSpaceNeeded = 30000000
 
 const executeCommand = (command) => {
     if (command.startsWith("cd")) {
@@ -59,6 +60,57 @@ const noteFile = (size, name) => {
 };
 lines.forEach(readLine);
 
+const totalSize = (dir) => {
+    let size = 0;
+    Object.values(dir).forEach(folderOrDir => {
+        if (typeof folderOrDir === `object`) {
+            size += totalSize(folderOrDir);
+        } else if (typeof folderOrDir === `number`) {
+            size += folderOrDir;
+        }
+    });
+    return size;
+};
+const walk = (dir, name, callback) => {
+    Object.entries(dir).forEach(([name, folderOrDir]) => {
+        if (typeof folderOrDir === `object`) {
+            walk(folderOrDir, name, callback);
+            callback(folderOrDir);
+        }
+    });
+};
 
+const collectSizesOfAtMost100000 = (map) => {
+    let total = 0
+    walk(map, "/", (dir) => {
+        const size = totalSize(dir);
+        if (size <= 100000) {
+            total += size;
+        }
+    })
+    return total;
+};
+
+
+const findToDeleteSmallest = (map) => {
+    let smallest = Number.MAX_SAFE_INTEGER;
+    walk(map, "/", (dir) => {
+        const size = totalSize(dir);
+        if (size >= needToDelete && size < smallest) {
+            smallest = size
+        }
+    })
+    return smallest;
+}
+
+const totalUsed = totalSize(map);
+const unusedSpace = totalAvailable - totalUsed;
+const needToDelete = minSpaceNeeded + totalUsed - totalAvailable;
+const collectedSizesOfAtMost100000 = collectSizesOfAtMost100000(map);
+const smallesToDelete = findToDeleteSmallest(map);
 console.timeEnd("Time");
 console.log(map);
+console.log({collectedSizesOfAtMost100000});
+console.log({totalUsed, totalAvailable, minSpaceNeeded, unusedSpace});
+console.log({needToDelete});
+console.log({smallesToDelete});
