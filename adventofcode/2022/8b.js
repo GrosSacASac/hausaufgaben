@@ -24,6 +24,7 @@ lines.forEach((line, i) => {
     });
 });
 
+let heighestScenicScore = 0;
 for (let y = 0; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
         const tree = trees[y][x];
@@ -76,24 +77,17 @@ for (let y = 0; y < height; y += 1) {
             tree[sceniceCode]=visibleInDirection;
 
         });
-    }
-}
-
-let heighestScenicScore = 0;
-for (let y = 0; y < height; y += 1) {
-    for (let x = 0; x < width; x += 1) {
         const score = 
-            trees[y][x][`visible|0,-1`] * 
-            trees[y][x][`visible|0,1`] * 
-            trees[y][x][`visible|-1,0`] * 
-            trees[y][x][`visible|1,0`];
-        trees[y][x].score = score;
+            tree[`visible|0,-1`] * 
+            tree[`visible|0,1`] * 
+            tree[`visible|-1,0`] * 
+            tree[`visible|1,0`];
+        // tree.score = score;
         if (Number.isFinite(score)) {
             heighestScenicScore = Math.max(heighestScenicScore, score);
         }
     }
 }
-
 
 
 
