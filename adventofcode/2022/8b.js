@@ -25,8 +25,8 @@ lines.forEach((line, i) => {
 });
 
 let heighestScenicScore = 0;
-for (let y = 0; y < height; y += 1) {
-    for (let x = 0; x < width; x += 1) {
+for (let y = 1; y < height -1; y += 1) {
+    for (let x = 1; x < width -1; x += 1) {
         const tree = trees[y][x];
         [[-1, 0], [1, 0], [0, -1], [0, 1]].forEach(directions => {
             const [directionX, directionY] = directions;
