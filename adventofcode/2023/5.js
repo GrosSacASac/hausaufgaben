@@ -22,7 +22,6 @@ const makeDetailedMapping = function (numbers) {
         map[i] = i;
     }
     numbers.forEach(function ({destinationStart, sourceStart, range}) {
-        console.log({destinationStart, sourceStart, range});
         let destination = destinationStart;
         for (let i = sourceStart; i < sourceStart + range; i += 1, destination += 1) {
             
@@ -40,9 +39,8 @@ const maps = [];
 let lastObject;
 restLines.forEach(function (line) {
     if (line.includes(":")) {
-        const description = line.split(" ")[0];
-        source,
-        destination,
+        const description = line.split(" ")[0].trim();;
+        const [source, TO, destination] = description.split("-");
         lastObject = {
             source,
             destination,
@@ -57,26 +55,33 @@ restLines.forEach(function (line) {
     } else {
         maps.push(lastObject);
         lastObject.detailedMapping = makeDetailedMapping(lastObject.numbers);
+        lastObject = undefined;
     }
 });
-// console.log({seedIds});
-// console.log(maps);
-// console.log(maps[0].detailedMapping);
-// console.log(current);
-
-const initialSource = "seed";
-const objective = "soil";
-const finalObjective = "location";
-
-let sourceId = seedIds[0];
-let sourceType = initialSource;
-while (sourceType !== finalObjective) {
-    const correctMap = maps.find(function (map) {
-        return map.description.startsWith(`${sourceType}`);
-    });
-    const soil = correctMap.detailedMapping[seedIds[0]];
+if (lastObject) {
+    
+    maps.push(lastObject);
+    lastObject.detailedMapping = makeDetailedMapping(lastObject.numbers);
 }
+
+let lowestLocation = 999999999;
+seedIds.forEach(function(seedId) {
+    const initialSource = "seed";
+    const finalObjective = "location";
+    
+    let sourceId = seedId;
+    let sourceType = initialSource;
+    while (sourceType !== finalObjective) {
+        const correctMap = maps.find(function (map) {
+            return map.source === `${sourceType}`;
+        });
+        sourceId = correctMap.detailedMapping[sourceId];
+        sourceType = correctMap.destination;
+    }
+    lowestLocation = Math.min(sourceId, lowestLocation);
+});
+
 
 
 console.timeEnd("Time");
-console.log(soil);
+console.log(lowestLocation);
