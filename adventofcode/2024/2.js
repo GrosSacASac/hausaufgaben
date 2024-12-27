@@ -12,21 +12,11 @@ console.time("Time");
 let lines = input.split("\n");
 
 let safe = 0;
-lines.forEach(line => {
-    if (!line) {
-        return;
-    }
-    const numbers = line.split(" ").map(function (number) {
-        const stripped = number.trim();
-        const asNumber = parseInt(stripped);
-        if (!Number.isFinite(asNumber)) {
-            return;
-        }
-        return asNumber;
-    }).filter(Boolean);
+
+const isLineSafe = (numbers) => {
     let increasing = undefined;
     let first = true;
-    let lineIsSafe = numbers.every((number, i) => {
+    return numbers.every((number, i) => {
         if (first === true) {
             first = false;
             return true;
@@ -48,8 +38,40 @@ lines.forEach(line => {
             return false;
         }
     });
-    safe += Number(lineIsSafe);
+};
+
+const numbersFromLine = (line) => {
+    return line.split(" ").map(function (number) {
+        const stripped = number.trim();
+        const asNumber = parseInt(stripped);
+        if (!Number.isFinite(asNumber)) {
+            return;
+        }
+        return asNumber;
+    }).filter(Boolean);
+};
+
+lines.forEach(line => {
+    if (!line) {
+        return;
+    }
+    safe += Number(isLineSafe(numbersFromLine(line)));
+});
+
+
+let safeb = 0;
+lines.forEach(line => {
+    if (!line) {
+        return;
+    }
+    const numbers = numbersFromLine(line);
+    const safeWithOneRemoval = isLineSafe(numbers) || numbers.some((ignore, i) => {
+        const arrayMinusOneElement = Array.from(numbers);
+        arrayMinusOneElement.splice(i, 1);
+        return isLineSafe(arrayMinusOneElement)
+    });
+    safeb += Number(safeWithOneRemoval);
 });
 
 console.timeEnd("Time");
-console.log({safe});
+console.log({safe, safeb});
