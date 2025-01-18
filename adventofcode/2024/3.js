@@ -9,76 +9,86 @@ const __dirname = path.dirname(__filename);
 
 const input = fs.readFileSync(`${__dirname}/3input.txt`, 'utf-8');
 console.time("Time");
-// const lines = input.split("\n");
-let c="x";
 
 
-states
-while (c) {
+const states = {
+    M: "m",
+    U: "u",
+    L: "L",
+    LEFTP: "(",
+    POSTCOMMA: ",",
+    OTHER: "OTHER"
+};
+let state = states.OTHER;
+let c = "";
+let i = 0;
+// mul(a,b)
+let a;
+let aString = ""; //while reading string we add character by character
+let b;
+let bString = "";
+let sum = 0;
 
-}
-
-let safe = 0;
-
-const isLineSafe = (numbers) => {
-    let increasing = undefined;
-    let first = true;
-    return numbers.every((number, i) => {
-        if (first === true) {
-            first = false;
-            return true;
-        }
-        const previousNumber = numbers[i - 1];
-        let localIncrease = (previousNumber < number)
-        if (increasing === undefined) {
-            increasing = localIncrease;
-        }
-
-        if (increasing === localIncrease) {
-            const difference = Math.abs(previousNumber - number);
-            if (difference >= 1 && difference <= 3) {
-                return true;
-            } else {
-                return false;
-            }
+do {
+    c = input[i];
+    if (state === states.OTHER && c === "m") {
+        state = states.M;
+    } else if (state === states.M) {
+        if (c === "u") {
+            state = states.U;
         } else {
-            return false;
+            state = states.OTHER;
         }
-    });
-};
-
-const numbersFromLine = (line) => {
-    return line.split(" ").map(function (number) {
-        const stripped = number.trim();
-        const asNumber = parseInt(stripped);
-        if (!Number.isFinite(asNumber)) {
-            return;
+    } else if (state === states.U) {
+        if (c === "l") {
+            state = states.L;
+        } else {
+            state = states.OTHER;
         }
-        return asNumber;
-    }).filter(Boolean);
-};
-
-lines.forEach(line => {
-    if (!line) {
-        return;
+    } else if (state === states.L) {
+        if (c === "(") {
+            state = states.LEFTP;
+        } else {
+            state = states.OTHER;
+        }
+    } else if (state === states.LEFTP) {//start of numbers, or middle of numbers from a
+        const asNumber = Number(c);
+        if (Number.isFinite(asNumber)) {
+            aString += c;
+        } else {
+            if (c === ",") {
+                if (aString === "") {
+                    state = states.OTHER;
+                } else {
+                    a = Number(aString);
+                    state = states.POSTCOMMA;
+                }
+            } else {
+                state = states.OTHER;
+            }
+            aString = "";
+        }
+    } else if (state === states.POSTCOMMA) {//start of second numbers, or middle of numbers from b
+        const asNumber = Number(c);
+        if (Number.isFinite(asNumber)) {
+            bString += c;
+        } else {
+            if (c === ")") {
+                if (bString === "") {
+                } else {
+                    b = Number(bString);
+                    sum += a * b;
+                    a = undefined;
+                    b = undefined;
+                }
+            }
+            bString = "";
+            state = states.OTHER;
+        }
     }
-    safe += Number(isLineSafe(numbersFromLine(line)));
-});
+    i += 1;
+} while (i < input.length);
 
-
-let safeb = 0;
-lines.forEach(line => {
-    if (!line) {
-        return;
-    }
-    const numbers = numbersFromLine(line);
-    const safeWithOneRemoval = isLineSafe(numbers) || numbers.some((ignore, i) => {
-        const arrayMinusOneElement = Array.from(numbers);
-        arrayMinusOneElement.splice(i, 1);
-        return isLineSafe(arrayMinusOneElement)
-    });
-    safeb += Number(safeWithOneRemoval);
-});
 
 console.timeEnd("Time");
-console.log({safe, safeb});
+console.log({sum});
