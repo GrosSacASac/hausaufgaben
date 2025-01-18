@@ -17,6 +17,16 @@ const states = {
     L: "L",
     LEFTP: "(",
     POSTCOMMA: ",",
+    // handle do()
+    D: "d",
+    O: "o",
+    LEFTPDO: "do(",
+    // don't()
+    N: "N",
+    APOSTROPHE: "'",
+    T: "T",
+    LEFTPDONT: "dont(",
+
     OTHER: "OTHER"
 };
 let state = states.OTHER;
@@ -28,30 +38,42 @@ let aString = ""; //while reading string we add character by character
 let b;
 let bString = "";
 let sum = 0;
+let dontMode = false;
+let reevaluate = false; // go back 1 letter when going back to states OTHER
+// important in case of mul(5do()) 
+// where mul is invalid because of the d, but we have to reevalute the d to enter a state where we can confirm
+// the do
 
 do {
     c = input[i];
-    if (state === states.OTHER && c === "m") {
-        state = states.M;
+    if (state === states.OTHER) {
+        if (c === "m") {
+            state = states.M;
+        } else if (c === "d") {
+            state = states.D;
+        }
     } else if (state === states.M) {
         if (c === "u") {
             state = states.U;
         } else {
+            reevaluate = true;
             state = states.OTHER;
         }
     } else if (state === states.U) {
         if (c === "l") {
             state = states.L;
         } else {
+            reevaluate = true;
             state = states.OTHER;
         }
     } else if (state === states.L) {
         if (c === "(") {
             state = states.LEFTP;
         } else {
+            reevaluate = true;
             state = states.OTHER;
         }
-    } else if (state === states.LEFTP) {//start of numbers, or middle of numbers from a
+    } else if (state === states.LEFTP) { //start of numbers, or middle of numbers from a
         const asNumber = Number(c);
         if (Number.isFinite(asNumber)) {
             aString += c;
@@ -64,6 +86,7 @@ do {
                     state = states.POSTCOMMA;
                 }
             } else {
+                reevaluate = true;
                 state = states.OTHER;
             }
             aString = "";
@@ -77,16 +100,75 @@ do {
                 if (bString === "") {
                 } else {
                     b = Number(bString);
-                    sum += a * b;
+                    if (!dontMode) {
+                        sum += a * b;
+                    }
                     a = undefined;
                     b = undefined;
                 }
+            } else {
+                reevaluate = true;
             }
             bString = "";
             state = states.OTHER;
         }
+    } else if (state === state.D) {
+        if (c === "o") {
+            state = states.O;
+        } else {
+            reevaluate = true;
+            state = states.OTHER;
+        }
+    } else if (state === state.O) {
+        if (c === "(") {
+            state = states.LEFTPDO;
+        } else if (c === "n") {
+            state = states.N;
+        } else {
+            reevaluate = true;
+            state = states.OTHER;
+        }
+    } else if (state === states.LEFTPDO) {
+        if (c === ")") {
+            dontMode = false;
+        } else {
+            reevaluate = true;
+        }
+        state = states.OTHER
+    } else if (state === states.N) {
+        if (c === "'") {
+            state = states.APOSTROPHE;
+        } else {
+            reevaluate = true;
+            state = states.OTHER;
+        }
+    } else if (state === states.APOSTROPHE) {
+        if (c === "t") {
+            state = states.T;
+        } else {
+            reevaluate = true;
+            state = states.OTHER;
+        }
+    } else if (state === states.T) {
+        if (c === "(") {
+            state = states.LEFTPDONT;
+        } else {
+            reevaluate = true;
+            state = states.OTHER;
+        }
+    } else if (state === states.LEFTPDONT) {
+        if (c === ")") {
+            dontMode = true;
+        } else {
+            reevaluate = true;
+        }
+        state = states.OTHER;
     }
     i += 1;
+    if (reevaluate) {
+        i -= 1;
+    }
+    reevaluate = false;
 } while (i < input.length);
 
 
