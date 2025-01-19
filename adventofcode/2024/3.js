@@ -103,12 +103,12 @@ do {
                     if (!dontMode) {
                         sum += a * b;
                     }
-                    a = undefined;
-                    b = undefined;
                 }
             } else {
                 reevaluate = true;
             }
+            a = undefined;
+            b = undefined;
             bString = "";
             state = states.OTHER;
         }
