@@ -171,7 +171,7 @@ const findSum = () => {
         }
         reevaluate = false;
     } while (i < input.length);
-    return sum
+    return sum;
 };
 
 console.timeEnd("Time");
