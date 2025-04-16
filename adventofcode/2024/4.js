@@ -7,6 +7,7 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const order = ["X", "M", "A", "S"];
+const wordLength = order.length;
 const first = order[0];
 const last = order[order.length - 1];
 const relevant = order.join("", "");
@@ -64,6 +65,58 @@ const columnsFromLines = (lines) => {
     
 };
 
+const diagonalsInDirectionFromLines = (lines, directionX, directionY) => {
+    
+    const diagonales = [];
+    const startY = -0.5 * (directionY -1) * lines.length;
+    const endY = 0.5 * (directionY +1) * lines.length
+    for (let i = startY; i !== endY; i += directionY) {
+        const diagonale = [];
+        let y = i;
+        let x = -0.5 * (directionX -1) * lines[0].length;
+        const endX = 0.5 * (directionX +1) * lines[0].length;
+        const lengthOfThisDiagonale = Math.min(
+            Math.abs(y - endY),
+            Math.abs(x - endX),
+        );
+        if (lengthOfThisDiagonale >= wordLength) {
+            for (let k = 0; k < lengthOfThisDiagonale; k += 1) {
+                diagonale.push(lines[y][x]);
+                y += directionY;
+                x += directionX;
+            }
+            diagonales.push(diagonale);
+        }
+    }
+    {
+        // don't do the main diagonale twice
+    const startX = -0.5 * (directionX -1) * lines[0].length + directionX;
+
+    const endX = 0.5 * (directionX +1) * lines[0].length;
+    
+    for (let j = startX; j !== endX; j += directionX) {
+        const diagonale = [];
+        let x = j;
+        let y = -0.5 * (directionY -1) * lines.length;
+        const endY = 0.5 * (directionY +1) * lines.length
+        const lengthOfThisDiagonale = Math.min(
+            Math.abs(y - endY),
+            Math.abs(x - endX),
+        );
+        
+        if (lengthOfThisDiagonale >= wordLength) {
+            for (let k = 0; k < lengthOfThisDiagonale; k += 1) {
+                diagonale.push(lines[y][x]);
+                y += directionY;
+                x += directionX;
+            }
+            diagonales.push(diagonale);
+        }
+    }
+    }
+    return diagonales;
+}
+
 
 
 const input = fs.readFileSync(`${__dirname}/4input.txt`, 'utf-8');
@@ -71,7 +124,7 @@ console.time("Time");
 
 const lines = linesFromText(input);
 const columns = columnsFromLines(lines);
-const diagonals = ...
+const diagonals = diagonalsInDirectionFromLines(lines, -1, +1)
 
 console.timeEnd("Time");
-console.log()
+console.log(diagonals)
