@@ -66,18 +66,18 @@ const columnsFromLines = (lines) => {
 };
 
 const diagonalsInDirectionFromLines = (lines, directionX, directionY) => {
-    
     const diagonales = [];
-    const startY = -0.5 * (directionY -1) * lines.length;
-    const endY = 0.5 * (directionY +1) * lines.length
-    for (let i = startY; i !== endY; i += directionY) {
+
+    const startY = -0.5 * (directionY -1) * (lines.length - 1);
+    const endY = 0.5 * (directionY +1) * (lines.length - 1)
+    for (let i = startY; i !== endY + directionY; i += directionY) {
         const diagonale = [];
         let y = i;
-        let x = -0.5 * (directionX -1) * lines[0].length;
-        const endX = 0.5 * (directionX +1) * lines[0].length;
+        let x = -0.5 * (directionX -1) * (lines[0].length - 1);
+        const endX = 0.5 * (directionX +1) * (lines[0].length - 1);
         const lengthOfThisDiagonale = Math.min(
-            Math.abs(y - endY),
-            Math.abs(x - endX),
+            Math.abs(y - endY) + 1,
+            Math.abs(x - endX) + 1,
         );
         if (lengthOfThisDiagonale >= wordLength) {
             for (let k = 0; k < lengthOfThisDiagonale; k += 1) {
@@ -90,18 +90,16 @@ const diagonalsInDirectionFromLines = (lines, directionX, directionY) => {
     }
     {
         // don't do the main diagonale twice
-    const startX = -0.5 * (directionX -1) * lines[0].length + directionX;
-
-    const endX = 0.5 * (directionX +1) * lines[0].length;
-    
-    for (let j = startX; j !== endX; j += directionX) {
+    const startX = -0.5 * (directionX -1) * (lines[0].length - 1) + directionX;
+    const endX = 0.5 * (directionX +1) * (lines[0].length - 1);
+    for (let j = startX; j !== endX + directionX; j += directionX) {
         const diagonale = [];
         let x = j;
-        let y = -0.5 * (directionY -1) * lines.length;
-        const endY = 0.5 * (directionY +1) * lines.length
+        let y = -0.5 * (directionY -1) * (lines.length - 1);
+        const endY = 0.5 * (directionY +1) * (lines.length - 1)
         const lengthOfThisDiagonale = Math.min(
-            Math.abs(y - endY),
-            Math.abs(x - endX),
+            Math.abs(y - endY) + 1,
+            Math.abs(x - endX) + 1,
         );
         
         if (lengthOfThisDiagonale >= wordLength) {
@@ -117,6 +115,11 @@ const diagonalsInDirectionFromLines = (lines, directionX, directionY) => {
     return diagonales;
 }
 
+const diagonalsFromLines = (lines) => {
+    return diagonalsInDirectionFromLines(lines, 1, 1).concat(
+        diagonalsInDirectionFromLines(lines, -1, 1)
+    );
+};
 
 
 const input = fs.readFileSync(`${__dirname}/4input.txt`, 'utf-8');
@@ -124,7 +127,13 @@ console.time("Time");
 
 const lines = linesFromText(input);
 const columns = columnsFromLines(lines);
-const diagonals = diagonalsInDirectionFromLines(lines, -1, +1)
+const diagonals = diagonalsFromLines(lines); // only need 2 directions since we count in reverse
+
+const all = lines.concat(columns).concat(diagonals);
+
+const total = all.reduce((p, line) => {
+    return p + countLineAndReverse(line);
+}, 0);
 
 console.timeEnd("Time");
-console.log(diagonals)
+console.log(total)
