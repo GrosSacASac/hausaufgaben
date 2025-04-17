@@ -59,31 +59,51 @@ const verifyUpdates = () => {
     });
 };
 
-for (updateIndex of incorrects.entries()) {//does not iterate ?
-    const numbers = updates[updateIndex];
-    const copy = numbers.slice();
+verifyUpdates();
+let hasIncorrect = true;
+let updatesCopy = updates.slice();
+
+while (hasIncorrect) {
+    hasIncorrect = false;
+    incorrects.forEach((updateIndex) => {
+        const numbers = updatesCopy[updateIndex];
+        const copy = numbers.slice();
+        const {length} = numbers;
+        let passNumbers = false;
+        copy.forEach((number, i) => {
+            if (passNumbers) {
+                return;
+            }
+            rules.forEach(([a, b]) => {
+                if (passNumbers) {
+                    return;
+                }
+                if (number === b) {
+                    for (let j = i + 1; j < length; j += 1) {
+                        if (copy[j] === a) {
+                            let temp = copy[j-1];
+                            copy[j] = temp;
+                            copy[j-1] = a;
+                            hasIncorrect = true;
+                            passNumbers = true;
+                            return;
+                        }
+                    }
+                }
+            });
+        });
+        updatesCopy[updateIndex] = copy;
+    });
+}
+
+incorrects.forEach((updateIndex) => {
+    const numbers = updatesCopy[updateIndex];
     const {length} = numbers;
     const halfLength = Math.floor(length / 2);
     
-    let middleNumber;
-    numbers.forEach((number, i) => {
-        rules.forEach(([a, b]) => {
-            if (number === b) {
-                for (let j = i + 1; j < length; j += 1) {
-                    if (numbers[j] === a) {
-                        copy[i] = a
-                        copy[j] = b
-                        break;
-                    }
-                }
-            }
-        });
-    });
-    
-    middleNumber = numbers[halfLength];
+    const middleNumber = numbers[halfLength];
     totalb += middleNumber;
-}
-verifyUpdates();
+});
 // While the Elves get to work printing the correctly-ordered updates, you have a little time to fix the rest of them.
 
 // For each of the incorrectly-ordered updates, use the page ordering rules to put the page numbers in the right order. For the above example, here are the three incorrectly-ordered updates and their correct orderings:
