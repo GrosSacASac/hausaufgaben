@@ -105,16 +105,20 @@ Predict the path of the guard. How many distinct positions will the guard visit 
 
 */
 
+console.time("Time");
 const player = ["^", ">", "v", "<"]; // rotating right
+let inititalPosition;
 const position = [0, 0];
 const direction = [0, 0];
+let initialFigure;
 let directionFigure = "<";
 
 const rotate = () => {
     directionFigure = player[(player.indexOf(directionFigure) + 1) % player.length];
-    setInitialPlayer(directionFigure, position[0], position[1]);
-}
-const setInitialPlayer = (c, x, y) => {
+    setPlayer(directionFigure, position[0], position[1]);
+};
+
+const setPlayer = (c, x, y) => {
     directionFigure = c;
     position[0] = x;
     position[1] = y;
@@ -135,6 +139,11 @@ const setInitialPlayer = (c, x, y) => {
     }
 };
 
+const setInitialPlayer = (c, x, y) => {
+    initialFigure = c;
+    inititalPosition = [x, y];
+};
+
 const isOut = (x, y) => {
     if (Math.min(x, y) <= -1) {
         return true;
@@ -143,24 +152,40 @@ const isOut = (x, y) => {
         return true;
     }
     return y >= columnLength;
-}
-const runMaze = () => {
+};
+
+const runMaze = (maze) => {
     let insideMaze = true;
+    const positionVisited = maze.slice();
+    setPlayer(initialFigure, inititalPosition[0], inititalPosition[1]);
+    positionVisited.forEach((line, y) => {
+        const row = [];
+        row.length = rowLength;
+        row.fill(false);
+        positionVisited[y] = row;
+    });
     while (insideMaze) {
-        positionVisited[position[1]][position[0]] = true;
+        if (!positionVisited[position[1]][position[0]]) {
+            positionVisited[position[1]][position[0]] = new Set();
+        } else if(positionVisited[position[1]][position[0]].has(directionFigure)) {
+            // detect loop
+            return "loop";
+            
+        }
+        positionVisited[position[1]][position[0]].add(directionFigure);
         const nextPositionX = position[0] + direction[0];
         const nextPositionY = position[1] + direction[1];
         if (isOut(nextPositionX, nextPositionY)) {
             insideMaze = false;
-        } else if (grid[nextPositionY][nextPositionX]) { //hit obstacle ?
+        } else if (maze[nextPositionY][nextPositionX]) { //hit obstacle ?
             rotate(); // go trough loop  to continue
         } else {
             position[0] = nextPositionX;
             position[1] = nextPositionY;
         }
     }
-
-}
+    return positionVisited;
+};
 
 const input = fs.readFileSync(`${__dirname}/6input.txt`, 'utf-8');
 const grid = input.trim().split("\n").map((line, y) => {
@@ -174,26 +199,59 @@ const grid = input.trim().split("\n").map((line, y) => {
 
 const rowLength = grid[0].length;
 const columnLength = grid.length;
-const positionVisited = grid.slice();
-positionVisited.forEach((line, y) => {
-    const row = [];
-    row.length = rowLength;
-    row.fill(false);
-    positionVisited[y] = row;
-});
 
-let total= 0;
-const countTotal = () => {
+
+const countTotal = (positionVisited) => {
+    let total= 0;
     positionVisited.forEach(line => {
         line.forEach(visited => {
-            total += Number(visited);
+            total += Number(!!visited);
         });
     });
+    return total;
 };
-runMaze();
-countTotal();
 
-console.time("Time");
+const positionVisited = runMaze(grid);
+const positionVisitedTotal = countTotal(positionVisited);
 
+const simulateObstacle = (x, y) => {
+    // return a copy of the maze with the added obstacle
+    const copy = grid.slice();
+    grid.forEach((line, y) => {
+        copy[y] = line.slice();
+    });
+    copy[y][x] = true;
+    return copy;
+};
+
+//to determine places where to put an obstacle
+// we can simulate an obstacle every step there is not one
+// then run the maze with that obstacle
+// detect loop when there is an insane (to be determined) amount of steps
+// or when a position is visited twice with the same direction
+// optimization: add obstacle only in visited positions
+
+const solveb = () => {
+    let progress = 0;
+    let totalb = 0;
+    positionVisited.forEach((line, y) => {
+        line.forEach((visited, x) => {
+            if (visited) {
+                // console.log("progress", progress);
+                // could set player just before obstacle to have a quicker run
+                const newMaze = simulateObstacle(x, y);
+                const positionVisitedInSimulation = runMaze(newMaze);
+                if (positionVisitedInSimulation === "loop") {
+                    totalb += 1;
+                }
+                progress += 1;
+            }
+        });
+    });
+    return totalb;
+}
+
+const totalb = solveb();
 console.timeEnd("Time");
-console.table(total);
+console.log(positionVisitedTotal);
+console.log(totalb);
