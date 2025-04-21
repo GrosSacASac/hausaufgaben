@@ -28,7 +28,30 @@ const solva = (calibrationEquations) => {
     let total = 0;
     calibrationEquations.forEach(([result, factors]) => {
         // use operators, * has no priority, try every combination
-        if (eval(factors.map(String).join("*")) === result) { 
+        const stringsToEvaluate = [];
+        stringsToEvaluate.push("");
+        factors.forEach((factor, i) => {
+            stringsToEvaluate.forEach((stringToEvaluate, j) => {
+                operators.forEach((operator, b) => {
+                    let copy = `(${stringToEvaluate}${factor})`;
+                    if (i !== factors.length - 1) {
+                        copy += ` ${operator} `;
+                        if (b) {
+                            stringsToEvaluate.push(copy);
+                        }
+                    }
+                    if (!b) {
+                        stringsToEvaluate[j] = copy
+                    } 
+                    
+                });
+            });
+        });
+        // console.log(stringsToEvaluate)
+        const has1Result = stringsToEvaluate.some((stringToEvaluate) => {
+            return eval(stringToEvaluate) === result;
+        })
+        if (has1Result) { 
             total += result;
         }
     });
