@@ -8,3 +8,5 @@
 10.txt
 research/
 adventofcode/2024/8.txt
+.rustc_info.json
+**/target/
