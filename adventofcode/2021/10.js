@@ -16,7 +16,7 @@ const pointsMap = {
     "]": 57,
     "}": 1197,
     ">": 25137,
-}
+};
 const closing = Object.keys(pointsMap);
 const opening = ["(", "[", "{", "<"];
 
@@ -41,7 +41,7 @@ lines.forEach(line => {
     if (faultyCharacter) {
         total += pointsMap[faultyCharacter];
     }
-})
+});
 
 
 

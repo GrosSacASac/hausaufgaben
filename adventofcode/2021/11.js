@@ -34,11 +34,12 @@ const bumpRegion = (xStart, xStop , yStart, yStop) => {
             matrix[x][y] = plusOne;
             if (plusOne === max) {
                 totalFlash += 1;
-                bumpRegion(x-1,x+1,y-1,y+1); // todo do not rebumb itself
+                bumpRegion(x-1,x+1,y-1,y+1); // loops ends since we check strict equality === max
             } 
         }
     }
-}
+};
+
 const reinitAbove10 = (xStart, xStop , yStart, yStop) => {
     xStart = Math.max(xStart, 0);
     xStop = Math.min(xStop, xMax);
@@ -49,10 +50,10 @@ const reinitAbove10 = (xStart, xStop , yStart, yStop) => {
             const squid = matrix[x][y];
             if (squid >= max) {
                 matrix[x][y] = 0;
-            } 
+            }
         }
     }
-}
+};
 
 for (let i = 0; i < totalSteps; i+=1) {
     
