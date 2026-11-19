@@ -26,8 +26,6 @@ fn main () {
         }
         let s = String::from(line).to_string();
         let mut chars_iterator = s.chars();
-        let mut digitsCharacters = ['0','0'];
-        let mut digits = [0, 0];
         // println!("{:?}", direction);
         let direction = chars_iterator.next();
         let direction = match direction {
@@ -39,11 +37,10 @@ fn main () {
                 'R'
             }
         };
-        let firstDigit = chars_iterator.next();
-        let mut firstDigit = match firstDigit {
+        let first_digit = chars_iterator.next();
+        let mut first_digit = match first_digit {
             Some(d) => {
                 // println!("first digit {}", d);
-                digitsCharacters[0] = d;
                 d
 
             },
@@ -51,24 +48,21 @@ fn main () {
                 '0'
             }
         };
-        let secondDigit = chars_iterator.next();
-        let secondDigit = match secondDigit {
+        let second_digit = chars_iterator.next();
+        let second_digit = match second_digit {
             Some(d) => {
                 // println!("second digit {}", d);
-                digitsCharacters[1] = d;
-                d                
+                d            
             },
             None => {
-                digitsCharacters[1] = digitsCharacters[0];
-                digitsCharacters[0] = '0';
-                let temp = firstDigit;
-                firstDigit = '0';
+                let temp = first_digit;
+                first_digit = '0';
                 temp
                 // break;
             }
         };
 
-        let amount = String::from(firstDigit).clone() + String::from(secondDigit).borrow_mut();
+        let amount = String::from(first_digit).clone() + String::from(second_digit).borrow_mut();
         let mut amount: i32 = match amount.trim().parse() {
             Err(_) => {
                 println!("Error reading a number");
