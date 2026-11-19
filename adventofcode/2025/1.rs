@@ -20,7 +20,7 @@ fn main () {
     let mut total = 0;
     let mut number = START;
     for line in vec {        
-        println!("{}", line);
+        // println!("{}", line);
         if line.len() <= 0 {
             break;
         }
@@ -37,33 +37,7 @@ fn main () {
                 'R'
             }
         };
-        let first_digit = chars_iterator.next();
-        let mut first_digit = match first_digit {
-            Some(d) => {
-                // println!("first digit {}", d);
-                d
-
-            },
-            None => {
-                '0'
-            }
-        };
-        let second_digit = chars_iterator.next();
-        let second_digit = match second_digit {
-            Some(d) => {
-                // println!("second digit {}", d);
-                d            
-            },
-            None => {
-                let temp = first_digit;
-                first_digit = '0';
-                temp
-                // break;
-            }
-        };
-
-        let amount = String::from(first_digit).clone() + String::from(second_digit).borrow_mut();
-        let mut amount: i32 = match amount.trim().parse() {
+        let mut amount: i32 = match line[1..].parse() {
             Err(_) => {
                 println!("Error reading a number");
                 return ();
@@ -72,6 +46,8 @@ fn main () {
                 the_number
             }
         };
+        // or 
+        // let mut amount: i32 = line[1..].parse().unwrap();
         if direction == 'L' {
             amount *= -1;
         }
@@ -80,6 +56,8 @@ fn main () {
         if number < 0 {
             number = MAX + number
         }
+        // or
+        // number = (number + amount).rem_euclid(MAX);
         if number == 0 {
             total += 1;
         }
