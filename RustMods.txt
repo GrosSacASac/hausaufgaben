@@ -165,3 +165,42 @@ Casting
 
 variable name as type name
 let integer = decimal as u8;
+
+or using traits
+
+String::from("")
+
+========================
+
+Vector
+
+
+let collected_iterator: Vec<i32> = (0..10).collect();
+
+let mut xs = vec![1i32, 2, 3];
+
+xs.push(4);
+// Error! Immutable vectors can't grow
+collected_iterator.push(0);
+
+xs.len();
+
+xs[1];
+
+// `pop` removes the last element from the vector and returns it
+xs.pop();
+
+for x in xs.iter() {
+    println!("{}", x);
+}
+
+// A `Vector` can also be iterated over while the iteration
+// count is enumerated in a separate variable (`i`)
+for (i, x) in xs.iter().enumerate() {
+    println!("position {} value {}", i, x);
+}
+
+for x in xs.iter_mut() {
+    *x *= 3;
+}
+
