@@ -1,0 +1,167 @@
+Variables
+
+constants
+static LANGUAGE: &str = "Rust";
+const THRESHOLD: i32 = 10;
+let x: i32;
+mutable
+let mut xx: i32 = 60
+
+==================================
+
+Types
+
+Integers 1
+floats 1.2
+characters 'a'
+strings "abc"
+booleans true or false
+unit type ()
+
+Tuples are mixed types fixed length immutable
+let pair = (1, true);
+
+Destructuring
+let (a, b) = pair;
+
+Arrays
+// Fixed-size array (type signature is superfluous).
+let xs: [i32; 5] = [1, 2, 3, 4, 5];
+
+// All elements can be initialized to the same value.
+let ys: [i32; 500] = [0; 500];
+
+xs.len()
+
+(slice: &[i32])
+let slice = &xs
+
+// get returns an `Option`.
+for i in 0..xs.len() + 1 { // Oops, one element too far!
+    match xs.get(i) {
+        Some(xval) => println!("{}: {}", i, xval),
+        None => println!("Slow down! {} is too far!", i),
+    }
+}
+
+// Create an empty vector (a growable array).
+let mut vec = Vec::new();
+
+The type statement can be used to give a new name to an existing type
+type NanoSecond = u64;
+
+let my_str = "hello";
+let my_string = String::from(my_str);
+
+========================
+
+Loops
+
+for i in 0..xs.len() {
+
+}
+
+for i in 0..100 {
+    // use 0..=100 to include the number 100
+}
+
+for .into_iter() //consume an iterable
+for .iter() // burrows interable
+for .iter_mut() // allows modification in place
+loop {}
+
+while condition {
+
+}
+==========================
+
+struct: define a structure
+
+
+struct Person {
+    name: String,
+    age: u8,
+}
+
+let name = String::from("Peter");
+let age = 27;
+let p = Person {name, age}
+p.age
+p.name
+
+// A unit struct
+struct Unit;
+
+// A tuple struct
+struct Pair(i32, f32);
+// Instantiate a tuple struct
+let pair = Pair(1, 0.1);
+// Access the fields of a tuple struct
+println!("pair contains {:?} and {:?}", pair.0, pair.1);
+
+==========================
+
+enum: define an enumeration
+
+The enum keyword allows the creation of a type which may be one of a few different variants. Any variant which is valid as a struct is also valid in an enum.
+
+names and type information together specify the variant:
+enum WebEvent {
+    // An `enum` variant may either be `unit-like`,
+    PageLoad,
+    // like tuple structs,
+    KeyPress(char),
+    Paste(String),
+    // or c-like structures.
+    Click { x: i64, y: i64 },
+}
+
+fn inspect(event: WebEvent) {
+    match event {
+        WebEvent::PageLoad => println!("page loaded"),
+        // Destructure `c` from inside the `enum` variant.
+        WebEvent::KeyPress(c) => println!("pressed '{}'.", c),
+        WebEvent::Paste(s) => println!("pasted \"{}\".", s),
+        // Destructure `Click` into `x` and `y`.
+        WebEvent::Click { x, y } => {
+            println!("clicked at x={}, y={}.", x, y);
+        },
+    }
+}
+
+fn main() {
+    let pressed = WebEvent::KeyPress('x');
+    // `to_owned()` creates an owned `String` from a string slice.
+    let pasted  = WebEvent::Paste("my text".to_owned());
+    let click   = WebEvent::Click { x: 20, y: 80 };
+    let load    = WebEvent::PageLoad;
+
+    inspect(pressed);
+    inspect(pasted);
+    inspect(click);
+    inspect(load);
+}
+
+
+// enum with implicit discriminator (starts at 0)
+enum Number {
+    Zero,
+    One,
+    Two,
+}
+
+// enum with explicit discriminator
+enum Color {
+    Red = 0xff0000,
+    Green = 0x00ff00,
+    Blue = 0x0000ff,
+}
+
+println!("zero is {}", Number::Zero as i32);
+
+=======================
+
+Casting
+
+variable name as type name
+let integer = decimal as u8;
