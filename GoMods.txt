@@ -144,3 +144,13 @@ LENTH <= CAPACITY
 You can extend a slice's length by re-slicing it, provided it has sufficient capacity.
 
 =====================
+
+Maps
+
+m := make(map[string]int)
+m["a"] = 499
+fmt.Println(m["a"]) // 499
+fmt.Println(m["b"]) // 0
+
+=====================
+
