@@ -15,3 +15,132 @@ rune // alias for int32
 float32 float64
 
 complex64 complex128
+
+======================
+
+Loops
+
+for loops
+
+for i := 0; i < 10; i += 1 {
+}
+
+loop over a range (using a slice)
+
+var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}
+for i, v := range pow { // use the underscore (_) variable to ignore index or value
+     fmt.Printf("2**%d = %d\n", i, v)
+}
+
+while loops (for loop with just condition)
+
+
+for i < 10 {
+}
+
+======================
+
+
+Functions
+
+func token , name, (param type, paramn, typen) return-value-type
+
+Example
+
+Sqrt(x float64) float64 {
+	z := 1.0
+	// ...
+	return z
+}
+
+
+=======================
+
+Defer
+
+A defer statement defers the execution of a function until the surrounding function returns. Deferred function calls are pushed onto a stack
+
+Can be used to close files, change the return value of a function
+
+
+========================
+
+Pointers
+
+
+var p *int
+
+The & operator generates a pointer
+
+i := 42
+p = &i
+
+The * operator denotes the underlying value.
+
+fmt.Println(*p) // read i through the pointer p
+*p = 21         // set i through the pointer p
+
+
+===============
+
+Structs (basically objects)
+
+type Vertex struct {
+	X int
+	Y int
+}
+
+func main() {
+     v := Vertex{1, 2}
+     v = Vertex{X:8} // Y is 0 (default empty value for int)
+	fmt.Println(v.X)
+}
+
+
+===================
+
+Arrays
+
+Fixed size
+The type [n]T is an array of n values of type T.
+
+var a [10]int
+
+primes := [6]int{2, 3, 5, 7, 11, 13}
+
+
+====================
+
+
+Slices
+
+ dynamically-sized, flexible view into the elements of an array.
+
+The type []T is a slice with elements of type T.
+
+high is excluding
+
+low defaults to 0 and hight defaults to array length
+a[low : high] // (a is an array)
+var s []int = primes[1:4]
+q := []int{2, 3, 5, 7, 11, 13} // slice literal (size is not provided)
+// creates an array and immediately returns its view
+
+The make function allocates a zeroed array and returns a slice that refers to that array:
+
+b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+b = append(b, 2, 3, 4)
+
+append returns a new slice. If the backing array of s is too small to fit all the given values a bigger array will be allocated. The returned slice will point to the newly allocated array. 
+
+
+
+The capacity of a slice is the number of elements in the underlying array, counting from the first element in the slice.
+
+expressions len(s) and cap(s).
+
+LENTH <= CAPACITY
+
+You can extend a slice's length by re-slicing it, provided it has sufficient capacity.
+
+=====================
