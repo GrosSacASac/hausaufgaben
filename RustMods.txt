@@ -177,7 +177,8 @@ Vector
 
 let collected_iterator: Vec<i32> = (0..10).collect();
 
-let mut xs = vec![1i32, 2, 3];
+let mut xs = vec![1i32, 2, 3]; // using a macro
+let mut xs: Vec<i8> = Vec::new(); // empty
 
 xs.push(4);
 // Error! Immutable vectors can't grow
