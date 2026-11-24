@@ -29,20 +29,41 @@ fn main () {
         let mut biggest : u8 = 0;
         let mut indexOfBiggest : u16 = 0;
         let mut lastIndex : u16 = 0;
+        let mut digits : Vec<u8> = Vec::new();
+        let length = line.len() as u16;
         for (i, x) in line.chars().enumerate() {
             // println!("position {} value {}", i, x);
             let digit = x.to_digit(10).unwrap() as u8;
+            digits.push(digit);
+            if i as u16 == (length - 1) {
+                break;
+            }
             if (digit > biggest) {
                 biggest = digit;
                 indexOfBiggest = i as u16;
             }
-            if (i as u16 > lastIndex) {
-                lastIndex = i as u16;
-            }
+            // if (i as u16 > lastIndex) {
+            //     lastIndex = i as u16;
+            // }
         }
         let mut secondBiggest : u8 = 0;
         let mut indexOfSecondBiggest : u16 = 0;
-        println!("biggest {} last index {}", biggest, lastIndex);
+        for (i, &digit) in digits.iter().enumerate() {
+            if i as u16 <= indexOfBiggest {
+                continue;
+            }
+            if (digit > secondBiggest) {
+                secondBiggest = digit;
+                indexOfSecondBiggest = i as u16;
+            }
+        }
+        println!("biggest {} secondBiggest {}", biggest, secondBiggest);
+        let twoDigits = [
+            String::from(char::from(biggest)),
+            String::from(char::from(secondBiggest))
+        ];
+        let joined: u8 = twoDigits.join("").parse().unwrap();
+        println!("{}", joined);
 
     }
 
