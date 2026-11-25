@@ -3,8 +3,6 @@ use std::io::{self, Read};
 use std::borrow::BorrowMut;
 use std::convert::TryInto;
 
-const TAKE: i32 = 2;
-const START: i32 = 50;
 
 fn main () {
     let mut input = String::new();
@@ -16,19 +14,15 @@ fn main () {
         .filter(|s| !s.is_empty())
         .collect::<Vec<_>>();
 
-    let mut total = 0;
-    let mut totalb = 0;
+    let mut total : u32 = 0;
     let mut number = START;
     for line in vec {        
         // println!("{}", line);
         if line.len() <= 0 {
             break;
         }
-        // let s = String::from(line).to_string();
-        // println!("{}", s);
         let mut biggest : u8 = 0;
         let mut indexOfBiggest : u16 = 0;
-        let mut lastIndex : u16 = 0;
         let mut digits : Vec<u8> = Vec::new();
         let length = line.len() as u16;
         for (i, x) in line.chars().enumerate() {
@@ -38,13 +32,10 @@ fn main () {
             if i as u16 == (length - 1) {
                 break;
             }
-            if (digit > biggest) {
+            if digit > biggest {
                 biggest = digit;
                 indexOfBiggest = i as u16;
             }
-            // if (i as u16 > lastIndex) {
-            //     lastIndex = i as u16;
-            // }
         }
         let mut secondBiggest : u8 = 0;
         let mut indexOfSecondBiggest : u16 = 0;
@@ -52,21 +43,23 @@ fn main () {
             if i as u16 <= indexOfBiggest {
                 continue;
             }
-            if (digit > secondBiggest) {
+            if digit > secondBiggest {
                 secondBiggest = digit;
                 indexOfSecondBiggest = i as u16;
             }
         }
+        const ASCII_NUMBER: u8 = 48;
         println!("biggest {} secondBiggest {}", biggest, secondBiggest);
         let twoDigits = [
-            String::from(char::from(biggest)),
-            String::from(char::from(secondBiggest))
+            String::from(char::from(biggest + ASCII_NUMBER)),
+            String::from(char::from(secondBiggest + ASCII_NUMBER))
         ];
-        let joined: u8 = twoDigits.join("").parse().unwrap();
+        let joined: u32 = twoDigits.join("").parse().unwrap();
         println!("{}", joined);
+        total += joined;
 
     }
 
-    // println!("result a: {}", total);
+    println!("result a: {}", total);
     // println!("result b: {}", totalb);
 }
