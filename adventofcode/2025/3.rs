@@ -1,7 +1,7 @@
 // rustc ./3.rs -o ./3.exe && cat ./3input.txt | ./3.exe
 use std::io::{self, Read};
 
-
+const EX_B : u8 = 12;
 fn main () {
     let mut input = String::new();
     io::stdin()
@@ -13,7 +13,8 @@ fn main () {
         .collect::<Vec<_>>();
 
     let mut total : u32 = 0;
-    for line in vec {        
+    let mut totalb: u64 = 0;
+    for line in vec {
         // println!("{}", line);
         if line.len() <= 0 {
             break;
@@ -52,11 +53,34 @@ fn main () {
             String::from(char::from(second_biggest + ASCII_NUMBER))
         ];
         let joined: u32 = two_digits.join("").parse().unwrap();
-        // println!("{}", joined);
         total += joined;
+
+        let mut digits_remaining = EX_B;
+        let mut index_of_last: i32 = -1;
+        while digits_remaining > 0 {
+            let mut biggest : u8 = 0;
+            for (i, &digit) in digits.iter().enumerate() {
+                if (i as i32) <= index_of_last {
+                    continue;
+                }
+                // length = 3
+                // digits_remaining = 2
+                // i > length - digits_remaining
+                if i as u16 > (length - (digits_remaining as u16)) {
+                    break;
+                }
+                if digit > biggest {
+                    biggest = digit;
+                    index_of_last = i as i32;
+                }
+            }
+            digits_remaining -= 1;
+            // println!("largest {} at position {} totalb added {}", biggest, digits_remaining, u64::pow(10, digits_remaining as u32) * biggest as u64);
+            totalb += u64::pow(10, digits_remaining as u32) * biggest as u64;
+        }
 
     }
 
     println!("result a: {}", total);
-    // println!("result b: {}", totalb);
+    println!("result b: {}", totalb);
 }
