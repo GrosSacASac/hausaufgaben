@@ -205,3 +205,13 @@ for x in xs.iter_mut() {
     *x *= 3;
 }
 
+===============================
+
+formatting
+
+// same as println!
+let s = format!("{a}{b}");
+println!("{}", x);
+
+=======================
+
